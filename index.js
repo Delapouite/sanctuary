@@ -3384,10 +3384,10 @@
     return Z.concat(xs, Z.of(xs.constructor, x));
   }
   S.append =
-    def('append',
-        {f: [Z.Applicative, Z.Semigroup]},
-        [a, f(a), f(a)],
-        append);
+  def('append',
+      {f: [Z.Applicative, Z.Semigroup]},
+      [a, f(a), f(a)],
+      append);
 
   //# prepend :: (Applicative f, Semigroup (f a)) => a -> f a -> f a
   //.
@@ -4371,7 +4371,7 @@
   //.
   //. Properties:
   //.
-  //.   - `forall s :: forall s :: String, t :: String.
+  //.   - `forall s :: String, t :: String.
   //.     S.joinWith(s, S.splitOnRegex(S.regex('g', S.regexEscape(s)), t)) = t
   //.
   //. See also [`splitOn`](#splitOn).
