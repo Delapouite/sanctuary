@@ -3580,6 +3580,76 @@
       [$.Function([a, a, $.Boolean]), $.Array(a), $.Array($.Array(a))],
       groupBy_);
 
+  //# sort :: (Ord a, Applicative m, Foldable m, Monoid (m a)) => m a -> m a
+  //.
+  //. Sorts a structure by comparing each element of the structure in turn.
+  //.
+  //. Properties:
+  //.
+  //.   - `S.sort(S.sort(m)) = S.sort(m)` (idempotence)
+  //.
+  //. See also [`sortBy`](#sortBy).
+  //.
+  //. ```javascript
+  //. > S.sort(['foo', 'bar', 'baz'])
+  //. ['bar', 'baz', 'foo']
+  //.
+  //. > S.sort([S.Left(0), S.Right(0), S.Left(1), S.Right(1)])
+  //. [S.Left(0), S.Left(1), S.Right(0), S.Right(1)]
+  //. ```
+  function sort(foldable) {
+    return sortBy(I, foldable);
+  }
+  S.sort =
+  def('sort',
+      {a: [Z.Ord], m: [Z.Applicative, Z.Foldable, Z.Monoid]},
+      [m(a), m(a)],
+      sort);
+
+  //# sortBy :: (Ord b, Applicative m, Foldable m, Monoid (m a)) => (a -> b) -> m a -> m a
+  //.
+  //. Sorts a structure by comparing the values produced by applying the given
+  //. function to each element of the structure in turn.
+  //.
+  //. Properties:
+  //.
+  //.   - `S.sortBy(f, S.sortBy(f, m)) = S.sortBy(f, m)` (idempotence)
+  //.
+  //. See also [`sort`](#sort).
+  //.
+  //. ```javascript
+  //. > S.sortBy(S.prop('x'), [{x: 2, y: 8}, {x: 1, y: 9}, {x: 3, y: 7}])
+  //. [{x: 1, y: 9}, {x: 2, y: 8}, {x: 3, y: 7}]
+  //.
+  //. > S.sortBy(S.prop('y'), [{x: 2, y: 8}, {x: 1, y: 9}, {x: 3, y: 7}])
+  //. [{x: 3, y: 7}, {x: 2, y: 8}, {x: 1, y: 9}]
+  //. ```
+  function sortBy(f, foldable) {
+    return Z.reduce(
+      function(foldable, r) { return append(r.x, foldable); },
+      Z.empty(foldable.constructor),
+      Z.reduce(function(xs, x) {
+        var fx = f(x);
+//      var idx = 0;
+//      while (idx < xs.length && Z.lte(xs[idx].fx, fx)) idx += 1;
+//      xs.splice(idx, 0, {x: x, fx: fx});
+        var lower = 0;
+        var upper = xs.length;
+        while (lower < upper) {
+          var idx = Math.floor((lower + upper) / 2);
+          if (Z.lte(fx, xs[idx].fx)) upper = idx; else lower = idx + 1;
+        }
+        xs.splice(lower, 0, {x: x, fx: fx});
+        return xs;
+      }, [], foldable)
+    );
+  }
+  S.sortBy =
+  def('sortBy',
+      {b: [Z.Ord], m: [Z.Applicative, Z.Foldable, Z.Monoid]},
+      [Fn(a, b), m(a), m(a)],
+      sortBy);
+
   //. ### Object
 
   //# prop :: Accessible a => String -> a -> b
