@@ -3597,8 +3597,8 @@
   //. > S.sort([S.Left(0), S.Right(0), S.Left(1), S.Right(1)])
   //. [S.Left(0), S.Left(1), S.Right(0), S.Right(1)]
   //. ```
-  function sort(foldable) {
-    return sortBy(I, foldable);
+  function sort(m) {
+    return sortBy(I, m);
   }
   S.sort =
   def('sort',
@@ -3624,10 +3624,11 @@
   //. > S.sortBy(S.prop('y'), [{x: 2, y: 8}, {x: 1, y: 9}, {x: 3, y: 7}])
   //. [{x: 3, y: 7}, {x: 2, y: 8}, {x: 1, y: 9}]
   //. ```
-  function sortBy(f, foldable) {
+  function sortBy(f, m) {
+    var M = m.constructor;
     return Z.reduce(
-      function(foldable, r) { return append(r.x, foldable); },
-      Z.empty(foldable.constructor),
+      function(m, r) { return Z.concat(m, Z.of(M, r.x)); },
+      Z.empty(M),
       Z.reduce(function(xs, x) {
         var fx = f(x);
 //      var idx = 0;
@@ -3641,7 +3642,7 @@
         }
         xs.splice(lower, 0, {x: x, fx: fx});
         return xs;
-      }, [], foldable)
+      }, [], m)
     );
   }
   S.sortBy =
