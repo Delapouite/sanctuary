@@ -3620,11 +3620,27 @@
   //. See also [`sort`](#sort).
   //.
   //. ```javascript
-  //. > S.sortBy(S.prop('x'), [{x: 2, y: 8}, {x: 1, y: 9}, {x: 3, y: 7}])
-  //. [{x: 1, y: 9}, {x: 2, y: 8}, {x: 3, y: 7}]
+  //. > S.sortBy(S.prop('rank'), [
+  //. .   {rank: 7, suit: 'spades'},
+  //. .   {rank: 5, suit: 'hearts'},
+  //. .   {rank: 2, suit: 'hearts'},
+  //. .   {rank: 5, suit: 'spades'},
+  //. . ])
+  //. [ {rank: 2, suit: 'hearts'},
+  //. . {rank: 5, suit: 'hearts'},
+  //. . {rank: 5, suit: 'spades'},
+  //. . {rank: 7, suit: 'spades'} ]
   //.
-  //. > S.sortBy(S.prop('y'), [{x: 2, y: 8}, {x: 1, y: 9}, {x: 3, y: 7}])
-  //. [{x: 3, y: 7}, {x: 2, y: 8}, {x: 1, y: 9}]
+  //. > S.sortBy(S.prop('suit'), [
+  //. .   {rank: 7, suit: 'spades'},
+  //. .   {rank: 5, suit: 'hearts'},
+  //. .   {rank: 2, suit: 'hearts'},
+  //. .   {rank: 5, suit: 'spades'},
+  //. . ])
+  //. [ {rank: 5, suit: 'hearts'},
+  //. . {rank: 2, suit: 'hearts'},
+  //. . {rank: 7, suit: 'spades'},
+  //. . {rank: 5, suit: 'spades'} ]
   //. ```
   function sortBy(f, m) {
     var M = m.constructor;
