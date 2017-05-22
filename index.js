@@ -3582,7 +3582,8 @@
 
   //# sort :: (Ord a, Applicative m, Foldable m, Monoid (m a)) => m a -> m a
   //.
-  //. Sorts a structure by comparing each element of the structure in turn.
+  //. Performs a [stable sort][] of the elements of the given structure, using
+  //. [`Z.lte`][] for comparisons.
   //.
   //. Properties:
   //.
@@ -3608,8 +3609,9 @@
 
   //# sortBy :: (Ord b, Applicative m, Foldable m, Monoid (m a)) => (a -> b) -> m a -> m a
   //.
-  //. Sorts a structure by comparing the values produced by applying the given
-  //. function to each element of the structure in turn.
+  //. Performs a [stable sort][] of the elements of the given structure, using
+  //. [`Z.lte`][] to compare the values produced by applying the given function
+  //. to each element of the structure.
   //.
   //. Properties:
   //.
@@ -3638,7 +3640,7 @@
         var upper = xs.length;
         while (lower < upper) {
           var idx = Math.floor((lower + upper) / 2);
-          if (Z.lte(fx, xs[idx].fx)) upper = idx; else lower = idx + 1;
+          if (Z.lte(xs[idx].fx, fx)) lower = idx + 1; else upper = idx;
         }
         xs.splice(lower, 0, {x: x, fx: fx});
         return xs;
@@ -4541,6 +4543,7 @@
 //. [equivalence]:      https://en.wikipedia.org/wiki/Equivalence_relation
 //. [parseInt]:         https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt
 //. [sanctuary-def]:    v:sanctuary-js/sanctuary-def
+//. [stable sort]:      https://en.wikipedia.org/wiki/Sorting_algorithm#Stability
 //. [thrush]:           https://github.com/raganwald-deprecated/homoiconic/blob/master/2008-10-30/thrush.markdown
 //. [type identifier]:  v:sanctuary-js/sanctuary-type-identifiers
 //.
