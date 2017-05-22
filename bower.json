@@ -22,7 +22,7 @@
     "types"
   ],
   "dependencies": {
-    "sanctuary-def": "sanctuary-js/sanctuary-def#b9e615342a60ed5492a7929239d88b11fb2945da",
+    "sanctuary-def": "0.11.1",
     "sanctuary-type-classes": "5.1.0",
     "sanctuary-type-identifiers": "1.0.0"
   },
